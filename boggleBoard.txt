@@ -1,0 +1,58 @@
+You are given a two-dimensional array (matrix) of potentially unequal height and 
+width containing letters; this matrix represents a boggle board. You are also 
+given a list of words. Write a function that returns an array of all the words 
+contained in the boggle board. A word is constructed in the boggle board by connecting 
+adjacent (horizontally, vertically, or diagonally) letters, without using any single
+letter at a given position more than once; while words can of course have repeated 
+letters, those repeated letters must come from different positions in the boggle board 
+in order for the word to be contained in the board. Note that two or more words are
+allowed to overlap and use the same letters in the boggle board.
+
+Input :["this", "is", "not", "a", "simple", "boggle", "board", "test", "REPEATED", "NOTRE-PEATED"]
+
+Output : ["this", "is", "a", "simple", "boggle", "board", "NOTRE-PEATED"]
+
+main(board,words)
+// Create a trie with given words -> will make it easier to determine weather or not the word exist
+const trie = new Trie(words)
+const visited = // same height and with of boards -> all values will be set to be false, this will help to pervent using repeated letters
+
+let result = []
+let addedWords = {}
+for(let i = 0; i < board.length; i++){
+  for(let j = 0; j < board[i].length; j++){
+    let letter = board[i][j]
+    if(!(letter in trie.root)) continue
+    explore(i,j,trie.root,visited,result,board,addedWords)
+  }
+}
+
+return result
+
+
+function explore(i,j,trie,visited,result,board,addedWords){
+  let queue = [[i,j]]
+  let node = trie
+  while(queue.length > 0){
+    let node = queue.shift()
+    i = node[0]
+    j = node[1]
+    if(visited[i][j]) continue
+    visited[i][j] = true
+    if("*" in node){
+      let currWord = node["*"]
+      if(!(currWord in addedWords)){
+        result.push(currWord)
+        addedWords[currWord] = true
+      }
+    } 
+    let letter = board[i][j]
+    if(!(letter in node)) contine
+    node = node[letter]
+    let allNeighbors = getAllNeighbors(i,j,visited,board)
+    for(let neighbor of allNeighbors){
+      queue.push(neighbor)
+    }
+    visited[i][j] = false
+  }
+}
