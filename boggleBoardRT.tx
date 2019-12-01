@@ -45,6 +45,7 @@ class Trie {
       if(!(letter in node)) node[letter] = {}
       node = node[letter]
     }
+    node["*"] = word
   }
 }
 
